@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/* Gradient Background Animation */
+body {
+  background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: white;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glow effect */
+.glow-text {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+/* Futuristic Button */
+.futuristic-btn {
+  background: linear-gradient(90deg, #f7971e, #ffd200);
+  color: #000;
+  font-weight: bold;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+.futuristic-btn:hover {
+  background: linear-gradient(90deg, #ffd200, #f7971e);
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+/* Form Fields uniform */
+input, textarea, select {
+  @apply w-full p-2 rounded bg-black/40 text-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-400 focus:outline-none appearance-none;
+  transition: all 0.3s ease;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #ffd200;
+  box-shadow: 0 0 5px #ffd200;
+}
+
+/* Placeholder */
+input::placeholder,
+textarea::placeholder {
+  color: #bbb !important;
+}
+select option:first-child {
+  color: #bbb;
+}
+
+/* Date Picker & Dropdown */
+input[type="date"], select {
+  color: #ccc;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+select option {
+  background: #0f0c29 !important;
+  color: #ccc !important;
+}
+
+/* Date Picker customization */
+input[type="date"]::-webkit-datetime-edit {
+  color: #ccc;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* Remove native arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Fix react-datepicker */
+.react-datepicker-wrapper {
+  width: 100% !important;
+}
+.react-datepicker__input-container {
+  width: 100% !important;
+  display: block !important;
+}
