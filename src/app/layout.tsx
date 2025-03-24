@@ -4,7 +4,7 @@ import { WagmiProvider } from 'wagmi';
 import { wagmiConfig } from '../wagmiConfig';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '../styles/globals.css'; 
-import BlockchainBg from '@/components/BlockchainBg'; // adăugăm componenta nouă
+import BlockchainBg from '@/components/BlockchainBg'; 
 
 const queryClient = new QueryClient();
 
