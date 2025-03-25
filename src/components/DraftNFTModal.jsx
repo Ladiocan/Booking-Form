@@ -17,15 +17,15 @@ export default function DraftNFTModal({ formData, onClose, onContinueMint }) {
     bg.src = '/voucher-template.png';
 
     bg.onload = async () => {
-      ctx.drawImage(bg, 0, 0, 800, 600);
+      ctx.drawImage(bg, 0, 0, 800, 800);
 
-      // Glow effect + text pe mijloc în box mov
+      // Glow effect
       ctx.font = '26px Orbitron, Arial';
       ctx.fillStyle = '#00FFFF';
       ctx.shadowColor = '#00FFFF';
       ctx.shadowBlur = 12;
       ctx.textAlign = 'center';
-      let y = 190;
+      let y = 260;
 
       ctx.fillText(`Name: ${formData.touristName}`, 440, y);
       y += 25;
@@ -63,9 +63,9 @@ export default function DraftNFTModal({ formData, onClose, onContinueMint }) {
         ctx.fillText(`Note: ${formData.additionalInfo}`, 430, y);
       }
 
-      ctx.shadowBlur = 0; // remove shadow for QR
+      // QR Code
+      ctx.shadowBlur = 0; 
 
-      // QR in stanga jos cu glow
       const qrData = JSON.stringify(formData);
       const qr = await QRCode.toDataURL(qrData);
       const qrImg = new Image();
@@ -73,15 +73,15 @@ export default function DraftNFTModal({ formData, onClose, onContinueMint }) {
       qrImg.onload = () => {
         ctx.shadowColor = '#00FFFF';
         ctx.shadowBlur = 15;
-        ctx.drawImage(qrImg, 79, 425, 150, 150);
+        ctx.drawImage(qrImg, 79, 590, 150, 150);
         ctx.shadowBlur = 0;
     
 
       // Watermark DRAFT
       ctx.save();
-      ctx.translate(420, 350);
+      ctx.translate(500, 440);
       ctx.rotate(-Math.atan(600 / 800));
-      ctx.font = '220px Orbitron, Arial';
+      ctx.font = '250px Orbitron, Arial';
       ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
       ctx.textAlign = 'center';
       ctx.fillText('DRAFT', 0, 0);
@@ -93,8 +93,8 @@ export default function DraftNFTModal({ formData, onClose, onContinueMint }) {
   const downloadPDF = () => {
     const canvas = canvasRef.current;
     const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('l', 'px', [800, 600]);
-    pdf.addImage(imgData, 'PNG', 0, 0, 800, 600);
+    const pdf = new jsPDF('l', 'px', [800, 800]);
+    pdf.addImage(imgData, 'PNG', 0, 0, 800, 800);
     pdf.save('voucher-draft.pdf');
   };
 
@@ -102,7 +102,7 @@ export default function DraftNFTModal({ formData, onClose, onContinueMint }) {
     <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
       <div className="bg-black p-4 rounded-xl relative w-[850px]">
         <h3 className="text-xl font-semibold mb-4 text-white">Draft NFT Voucher</h3>
-        <canvas ref={canvasRef} width={800} height={600} className="mb-4 rounded-lg shadow" />
+        <canvas ref={canvasRef} width={800} height={800} className="mb-4 rounded-lg shadow" />
 
         <div className="flex gap-4">
           <button onClick={onContinueMint} className="futuristic-btn w-1/2">Continue Mint</button>

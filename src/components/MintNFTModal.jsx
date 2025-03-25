@@ -2,12 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import useUploadToPinata from './useUploadToPinata';
 import useMintNFT from './useMintNFT';
+import MintSuccessPopup from './MintSuccessPopup';
+import LoadingDots from './LoadingDots';
 
 export default function MintNFTModal({ formData, onClose }) {
   const canvasRef = useRef(null);
   const { uploadToPinata, isLoading: uploadLoading } = useUploadToPinata();
   const { mintNFT, loading: mintLoading } = useMintNFT();
   const [metadataURI, setMetadataURI] = useState(null);
+
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [transactionHash, setTransactionHash] = useState(null);
+  const [voucherImage, setVoucherImage] = useState(null); 
 
   useEffect(() => {
     generateVoucher();
@@ -21,13 +27,13 @@ export default function MintNFTModal({ formData, onClose }) {
     bg.src = '/voucher-template.png';
 
     bg.onload = async () => {
-      ctx.drawImage(bg, 0, 0, 800, 600);
+      ctx.drawImage(bg, 0, 0, 800, 800);
       ctx.font = '26px Orbitron, Arial';
       ctx.fillStyle = '#00FFFF';
       ctx.shadowColor = '#00FFFF';
       ctx.shadowBlur = 12;
       ctx.textAlign = 'center';
-      let y = 190;
+      let y = 260;
 
       ctx.fillText(`Name: ${formData.touristName}`, 440, y);
       y += 25;
@@ -73,7 +79,7 @@ export default function MintNFTModal({ formData, onClose }) {
       qrImg.onload = () => {
         ctx.shadowColor = '#00FFFF';
         ctx.shadowBlur = 15;
-        ctx.drawImage(qrImg, 79, 425, 150, 150);
+        ctx.drawImage(qrImg, 79, 590, 150, 150);
         ctx.shadowBlur = 0;
       };
     };
@@ -89,35 +95,55 @@ export default function MintNFTModal({ formData, onClose }) {
     }
   };
 
-  const handleMintClick = async () => {
-    if (!metadataURI) return alert("Please upload to Pinata first!");
+  const handleConfirmMint = async () => {
+    try {
+      let finalMetadataURI = metadataURI;
+      if (!metadataURI) {
+        const pinataRes = await uploadToPinata(canvasRef, formData);
+        setMetadataURI(pinataRes.metadata);
+        finalMetadataURI = pinataRes.metadata;
+      }
 
-    await mintNFT(metadataURI);
+      const tx = await mintNFT(finalMetadataURI);
+      setTransactionHash(tx.hash);
+
+      const imageDataUrl = canvasRef.current.toDataURL('image/png'); 
+      setVoucherImage(imageDataUrl);
+
+      setShowSuccessPopup(true);
+    } catch (err) {
+      alert(`❌ Minting error: ${err.message}`);
+    }
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
       <div className="bg-black p-4 rounded-xl relative w-[850px]">
         <h3 className="text-xl font-semibold mb-4 text-white">NFT Voucher Preview</h3>
-        <canvas ref={canvasRef} width={800} height={600} className="mb-4 rounded-lg shadow" />
+        <canvas ref={canvasRef} width={800} height={800} className="mb-4 rounded-lg shadow" />
 
         <button 
-          onClick={handleUploadClick} 
-          className="futuristic-btn w-full mb-2" 
-          disabled={uploadLoading}
-        >
-          {uploadLoading ? 'Uploading...' : 'Upload to Pinata'}
-        </button>
-
-        <button 
-          onClick={handleMintClick} 
+          onClick={handleConfirmMint} 
           className="futuristic-btn w-full" 
-          disabled={!metadataURI || mintLoading}
+          disabled={uploadLoading || mintLoading}
         >
-          {mintLoading ? 'Minting NFT...' : 'Mint NFT (MetaMask)'}
+          {uploadLoading || mintLoading ? (
+            <>
+              Minting<LoadingDots />
+            </>
+          ) : 'Confirm Mint'}
         </button>
 
         <button onClick={onClose} className="absolute top-2 right-2 text-white">X</button>
+
+        {showSuccessPopup && (
+          <MintSuccessPopup
+            metadataURI={metadataURI}
+            transactionHash={transactionHash}
+            imageSrc={voucherImage}          
+            onClose={() => setShowSuccessPopup(false)}
+          />
+        )}
       </div>
     </div>
   );

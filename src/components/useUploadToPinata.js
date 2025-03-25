@@ -12,7 +12,8 @@ export default function useUploadToPinata() {
 
     const body = new FormData();
     body.append("file", file);
-    body.append("name", `${formData.destination} Voucher`);
+    body.append("touristName", formData.touristName); // nou: pentru numele PNG-ului
+    body.append("name", `${formData.touristName} - NFT Voucher`);
     body.append("description", `NFT Voucher for ${formData.destination}`);
     body.append("attributes", JSON.stringify([
       { trait_type: "Destination", value: formData.destination },

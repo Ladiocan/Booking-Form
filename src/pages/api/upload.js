@@ -21,14 +21,18 @@ export default async function handler(req, res) {
 
     try {
       const file = files.file[0];
-
       const fileStream = fs.createReadStream(file.filepath);
 
-      // Folosește FormData corect (node)
-      const imageFormData = new FormData();
-      imageFormData.append('file', fileStream, file.originalFilename);
+      // File name
+      const rawName = fields.name?.[0] || 'voucher';
+      const cleanedName = rawName.replace(/[^a-z0-9]/gi, '_');
+      const timestamp = Date.now();
+      const baseName = `${cleanedName} ${timestamp}`;
 
-      // Upload imagine pe Pinata
+      // Upload image
+      const imageFormData = new FormData();
+      imageFormData.append('file', fileStream, `${baseName}.png`);
+
       const imageRes = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
         method: 'POST',
         headers: {
@@ -38,17 +42,16 @@ export default async function handler(req, res) {
       });
 
       const imageResult = await imageRes.json();
-
       if (!imageRes.ok) throw new Error(imageResult.error || "Image upload failed");
 
       const imageCID = imageResult.IpfsHash;
 
-      // Construiește și urcă metadata
+      // Upload metadata
       const metadata = {
-        name: fields.name[0],
-        description: fields.description[0],
+        name: fields.name?.[0] || 'NFT Voucher',
+        description: fields.description?.[0] || 'Voucher NFT',
         image: `ipfs://${imageCID}`,
-        attributes: JSON.parse(fields.attributes[0])
+        attributes: JSON.parse(fields.attributes?.[0] || '[]')
       };
 
       const metadataRes = await fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', {
@@ -57,16 +60,20 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${PINATA_JWT}`
         },
-        body: JSON.stringify(metadata)
+        body: JSON.stringify({
+          pinataMetadata: {
+            name: `${baseName}_meta.json`
+          },
+          pinataContent: metadata
+        })
       });
 
       const metadataResult = await metadataRes.json();
-
       if (!metadataRes.ok) throw new Error(metadataResult.error || "Metadata upload failed");
 
       res.status(200).json({
         image: `ipfs://${imageCID}`,
-        metadata: `ipfs://${metadataResult.IpfsHash}`,
+        metadata: `ipfs://${metadataResult.IpfsHash}`
       });
 
     } catch (error) {

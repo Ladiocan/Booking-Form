@@ -13,19 +13,16 @@ export default function useMintNFT() {
     try {
       if (!window.ethereum) throw new Error("MetaMask not installed!");
 
-      // Modificarea corectă pentru ethers.js v6
       const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
 
       const tx = await contract.mintVoucher(metadataURI, {
-        value: ethers.parseEther("0.001") // ajustat corect pentru v6
+        value: ethers.parseEther("0.001") 
       });
 
       await tx.wait();
-
-      alert(`✅ NFT Minted successfully! Tx hash: ${tx.hash}`);
 
       return tx;
 
