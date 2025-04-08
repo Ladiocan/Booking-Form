@@ -29,7 +29,7 @@ export default function BlockchainBg() {
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // noduri
+      // nods
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
@@ -37,7 +37,7 @@ export default function BlockchainBg() {
         ctx.fill();
       });
 
-      // linii intre noduri
+      // lines
       particles.forEach((p1) => {
         particles.forEach((p2) => {
           const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
@@ -52,7 +52,7 @@ export default function BlockchainBg() {
         });
       });
 
-      // animatie
+      // animation
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;

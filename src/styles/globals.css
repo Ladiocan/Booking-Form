@@ -6,6 +6,8 @@ body {
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
   color: white;
+  margin: 0;
+  padding: 0;
 }
 
 @keyframes gradientBG {
@@ -100,4 +102,92 @@ input[type="number"]::-webkit-outer-spin-button {
   0% { opacity: 0.2; transform: translateY(0); }
   50% { opacity: 1; transform: translateY(-2px); }
   100% { opacity: 0.2; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .glass-card {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 3rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+  
+  .text-lg {
+    font-size: 1.1rem;
+  }
+  
+  input, textarea, select {
+    padding: 0.75rem;
+  }
+  
+  .futuristic-btn {
+    padding: 0.5rem 1.5rem;
+  }
+  
+  /* Form specific adjustments */
+  .react-datepicker {
+    width: 100% !important;
+  }
+  
+  .react-datepicker__input-container {
+    width: 100% !important;
+  }
+  
+  .react-datepicker__input-container input {
+    width: 100% !important;
+  }
+  
+  .react-datepicker__month-container {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .glass-card {
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  .text-5xl {
+    font-size: 2rem;
+  }
+  
+  .text-lg {
+    font-size: 1rem;
+  }
+  
+  input, textarea, select {
+    padding: 0.5rem;
+  }
+  
+  .futuristic-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Form specific adjustments */
+  .react-datepicker {
+    width: 100% !important;
+  }
+  
+  .react-datepicker__input-container {
+    width: 100% !important;
+  }
+  
+  .react-datepicker__input-container input {
+    width: 100% !important;
+  }
+  
+  .react-datepicker__month-container {
+    width: 100% !important;
+  }
 }

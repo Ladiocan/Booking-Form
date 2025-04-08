@@ -99,14 +99,22 @@ export default function DraftNFTModal({ formData, onClose, onContinueMint }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
-      <div className="bg-black p-4 rounded-xl relative w-[850px]">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
+      <div className="bg-black p-4 rounded-xl relative w-full max-w-[90vw] max-h-[90vh] flex flex-col">
         <h3 className="text-xl font-semibold mb-4 text-white">Draft NFT Voucher</h3>
-        <canvas ref={canvasRef} width={800} height={800} className="mb-4 rounded-lg shadow" />
+        <div className="flex-1 overflow-auto flex items-center justify-center">
+          <canvas 
+            ref={canvasRef} 
+            width={800} 
+            height={800} 
+            className="rounded-lg shadow"
+            style={{ maxWidth: '100%', maxHeight: 'calc(90vh - 180px)', objectFit: 'contain' }}
+          />
+        </div>
 
-        <div className="flex gap-4">
-          <button onClick={onContinueMint} className="futuristic-btn w-1/2">Continue Mint</button>
-          <button onClick={downloadPDF} className="futuristic-btn w-1/2">Download PDF</button>
+        <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <button onClick={onContinueMint} className="futuristic-btn flex-1">Continue Mint</button>
+          <button onClick={downloadPDF} className="futuristic-btn flex-1">Download PDF</button>
         </div>
 
         <button onClick={onClose} className="absolute top-2 right-2 text-white">X</button>

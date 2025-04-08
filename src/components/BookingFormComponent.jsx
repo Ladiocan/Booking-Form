@@ -43,6 +43,7 @@ export default function BookingFormComponent() {
           placeholder="Destination"
           value={formData.destination}
           onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+          className="w-full"
         />
 
         {/* Service Type */}
@@ -50,6 +51,7 @@ export default function BookingFormComponent() {
           name="serviceType"
           value={formData.serviceType}
           onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
+          className="w-full"
         >
           <option value="" disabled hidden>Select Service Type</option>
           <option value="Hotel">Hotel</option>
@@ -61,42 +63,42 @@ export default function BookingFormComponent() {
 
         {/* Conditional fields */}
         {formData.serviceType === 'Hotel' && (
-          <div className="flex gap-2">
-            <input type="text" placeholder="Hotel Name" value={formData.hotelName} onChange={(e) => setFormData({ ...formData, hotelName: e.target.value })} />
-            <input type="number" placeholder="Stars" min="1" max="5" value={formData.hotelStars} onChange={(e) => setFormData({ ...formData, hotelStars: e.target.value })} />
+          <div className="space-y-2">
+            <input type="text" placeholder="Hotel Name" value={formData.hotelName} onChange={(e) => setFormData({ ...formData, hotelName: e.target.value })} className="w-full" />
+            <input type="number" placeholder="Stars" min="1" max="5" value={formData.hotelStars} onChange={(e) => setFormData({ ...formData, hotelStars: e.target.value })} className="w-full" />
           </div>
         )}
 
         {formData.serviceType === 'Flight' && (
-          <div className="flex gap-2">
-            <input type="text" placeholder="Company" value={formData.flightCompany} onChange={(e) => setFormData({ ...formData, flightCompany: e.target.value })} />
-            <input type="text" placeholder="Flight Number" value={formData.flightNumber} onChange={(e) => setFormData({ ...formData, flightNumber: e.target.value })} />
+          <div className="space-y-2">
+            <input type="text" placeholder="Company" value={formData.flightCompany} onChange={(e) => setFormData({ ...formData, flightCompany: e.target.value })} className="w-full" />
+            <input type="text" placeholder="Flight Number" value={formData.flightNumber} onChange={(e) => setFormData({ ...formData, flightNumber: e.target.value })} className="w-full" />
           </div>
         )}
 
         {formData.serviceType === 'Tour Package' && (
-          <div className="flex gap-2">
-            <input type="text" placeholder="Hotel Name" value={formData.packageHotel} onChange={(e) => setFormData({ ...formData, packageHotel: e.target.value })} />
-            <input type="text" placeholder="Flight Company" value={formData.packageFlight} onChange={(e) => setFormData({ ...formData, packageFlight: e.target.value })} />
+          <div className="space-y-2">
+            <input type="text" placeholder="Hotel Name" value={formData.packageHotel} onChange={(e) => setFormData({ ...formData, packageHotel: e.target.value })} className="w-full" />
+            <input type="text" placeholder="Flight Company" value={formData.packageFlight} onChange={(e) => setFormData({ ...formData, packageFlight: e.target.value })} className="w-full" />
           </div>
         )}
 
         {formData.serviceType === 'Rent a Car' && (
-          <div className="flex gap-2">
-            <input type="text" placeholder="Company" value={formData.rentCompany} onChange={(e) => setFormData({ ...formData, rentCompany: e.target.value })} />
-            <input type="text" placeholder="Car Type" value={formData.carType} onChange={(e) => setFormData({ ...formData, carType: e.target.value })} />
+          <div className="space-y-2">
+            <input type="text" placeholder="Company" value={formData.rentCompany} onChange={(e) => setFormData({ ...formData, rentCompany: e.target.value })} className="w-full" />
+            <input type="text" placeholder="Car Type" value={formData.carType} onChange={(e) => setFormData({ ...formData, carType: e.target.value })} className="w-full" />
           </div>
         )}
 
         {formData.serviceType === 'Voucher' && (
-          <div className="flex gap-2">
-            <input type="text" placeholder="Service Name" value={formData.voucherService} onChange={(e) => setFormData({ ...formData, voucherService: e.target.value })} />
-            <input type="text" placeholder="Service Type" value={formData.voucherType} onChange={(e) => setFormData({ ...formData, voucherType: e.target.value })} />
+          <div className="space-y-2">
+            <input type="text" placeholder="Service Name" value={formData.voucherService} onChange={(e) => setFormData({ ...formData, voucherService: e.target.value })} className="w-full" />
+            <input type="text" placeholder="Service Type" value={formData.voucherType} onChange={(e) => setFormData({ ...formData, voucherType: e.target.value })} className="w-full" />
           </div>
         )}
 
         {/* Dates */}
-        <div className="flex w-full gap-2">
+        <div className="space-y-2">
           <DatePicker
             dateFormat="dd/MM/yyyy"
             selected={startDate}
@@ -106,6 +108,7 @@ export default function BookingFormComponent() {
             }}
             placeholderText="Start Date"
             minDate={new Date()}
+            className="w-full"
           />
           <DatePicker
             dateFormat="dd/MM/yyyy"
@@ -116,6 +119,7 @@ export default function BookingFormComponent() {
             }}
             placeholderText="End Date"
             minDate={startDate || new Date()}
+            className="w-full"
           />
         </div>
 
@@ -127,6 +131,7 @@ export default function BookingFormComponent() {
             placeholder="Adults"
             value={formData.adults}
             onChange={(e) => setFormData({ ...formData, adults: e.target.value })}
+            className="flex-1"
           />
           <input
             type="number"
@@ -134,6 +139,7 @@ export default function BookingFormComponent() {
             placeholder="Children"
             value={formData.children}
             onChange={(e) => setFormData({ ...formData, children: e.target.value })}
+            className="flex-1"
           />
         </div>
 
@@ -144,12 +150,13 @@ export default function BookingFormComponent() {
           placeholder="Tourist Name"
           value={formData.touristName}
           onChange={(e) => setFormData({ ...formData, touristName: e.target.value })}
+          className="w-full"
         />
 
         {/* Additional info */}
         <textarea
           placeholder="Additional info"
-          className="resize-y min-h-[40px]"
+          className="resize-y min-h-[40px] w-full"
           value={formData.additionalInfo}
           onChange={(e) => setFormData({ ...formData, additionalInfo: e.target.value })}
         ></textarea>
@@ -161,10 +168,12 @@ export default function BookingFormComponent() {
             placeholder="Amount"
             value={formData.price}
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            className="flex-1"
           />
           <select
             value={formData.currency}
             onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+            className="flex-1"
           >
             <option value="EUR">EUR</option>
             <option value="USD">USD</option>

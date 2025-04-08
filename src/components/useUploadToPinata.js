@@ -12,7 +12,7 @@ export default function useUploadToPinata() {
 
     const body = new FormData();
     body.append("file", file);
-    body.append("touristName", formData.touristName); // nou: pentru numele PNG-ului
+    body.append("touristName", formData.touristName); 
     body.append("name", `${formData.touristName} - NFT Voucher`);
     body.append("description", `NFT Voucher for ${formData.destination}`);
     body.append("attributes", JSON.stringify([
