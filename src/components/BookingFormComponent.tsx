@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import MintNFTModal from './MintNFTModal';
 import DraftNFTModal from './DraftNFTModal';
+import { FormDataProps } from '../types/FormDataProps';
 
 export default function BookingFormComponent() {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [showMintModal, setShowMintModal] = useState(false);
   const [showDraftModal, setShowDraftModal] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataProps>({
     destination: '',
     serviceType: '',
     hotelName: '',
@@ -28,27 +31,43 @@ export default function BookingFormComponent() {
     touristName: '',
     additionalInfo: '',
     price: '',
-    currency: 'EUR'
+    currency: 'EUR',
+    startDate: '',
+    endDate: ''
   });
+
+  useEffect(() => {
+    if (startDate) {
+      setFormData((prev) => ({
+        ...prev,
+        startDate: startDate.toISOString().split('T')[0]
+      }));
+    }
+  }, [startDate]);
+
+  useEffect(() => {
+    if (endDate) {
+      setFormData((prev) => ({
+        ...prev,
+        endDate: endDate.toISOString().split('T')[0]
+      }));
+    }
+  }, [endDate]);
 
   return (
     <div className="glass-card w-full max-w-lg mx-auto">
       <h2 className="text-2xl font-semibold mb-4 text-center glow-text">NFT Booking Details</h2>
       <form className="space-y-4">
 
-        {/* Destination */}
         <input
           type="text"
-          name="destination"
           placeholder="Destination"
           value={formData.destination}
           onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
           className="w-full"
         />
 
-        {/* Service Type */}
         <select
-          name="serviceType"
           value={formData.serviceType}
           onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
           className="w-full"
@@ -57,11 +76,11 @@ export default function BookingFormComponent() {
           <option value="Hotel">Hotel</option>
           <option value="Flight">Flight</option>
           <option value="Tour Package">Tour Package</option>
-          <option value="Rent a Car">Rent a Car</option> 
+          <option value="Rent a Car">Rent a Car</option>
           <option value="Voucher">Special Voucher</option>
         </select>
 
-        {/* Conditional fields */}
+        {/* CONDITIONALS */}
         {formData.serviceType === 'Hotel' && (
           <div className="space-y-2">
             <input type="text" placeholder="Hotel Name" value={formData.hotelName} onChange={(e) => setFormData({ ...formData, hotelName: e.target.value })} className="w-full" />
@@ -97,15 +116,11 @@ export default function BookingFormComponent() {
           </div>
         )}
 
-        {/* Dates */}
         <div className="space-y-2">
           <DatePicker
             dateFormat="dd/MM/yyyy"
             selected={startDate}
-            onChange={(date) => {
-              setStartDate(date);
-              setFormData({ ...formData, startDate: date?.toLocaleDateString('en-GB') || '' });
-            }}
+            onChange={(date) => setStartDate(date)}
             placeholderText="Start Date"
             minDate={new Date()}
             className="w-full"
@@ -113,10 +128,7 @@ export default function BookingFormComponent() {
           <DatePicker
             dateFormat="dd/MM/yyyy"
             selected={endDate}
-            onChange={(date) => {
-              setEndDate(date);
-              setFormData({ ...formData, endDate: date?.toLocaleDateString('en-GB') || '' });
-            }}
+            onChange={(date) => setEndDate(date)}
             placeholderText="End Date"
             minDate={startDate || new Date()}
             className="w-full"
@@ -127,23 +139,34 @@ export default function BookingFormComponent() {
         <div className="flex space-x-2">
           <input
             type="number"
-            min="1"
-            placeholder="Adults"
+            min={1}
             value={formData.adults}
-            onChange={(e) => setFormData({ ...formData, adults: e.target.value })}
+            onChange={(e) => {
+              const value = parseInt(e.target.value);
+              setFormData({
+                ...formData,
+                adults: isNaN(value) || value < 1 ? 1 : value
+              });
+            }}
+            onFocus={(e) => e.target.select()}
             className="flex-1"
           />
+
           <input
             type="number"
-            min="0"
-            placeholder="Children"
+            min={0}
             value={formData.children}
-            onChange={(e) => setFormData({ ...formData, children: e.target.value })}
+            onChange={(e) => {
+              const value = parseInt(e.target.value);
+              setFormData({
+                ...formData,
+                children: isNaN(value) || value < 0 ? 0 : value
+              });
+            }}
+            onFocus={(e) => e.target.select()}
             className="flex-1"
           />
         </div>
-
-        {/* Tourist name */}
         <input
           type="text"
           name="touristName"
@@ -153,7 +176,6 @@ export default function BookingFormComponent() {
           className="w-full"
         />
 
-        {/* Additional info */}
         <textarea
           placeholder="Additional info"
           className="resize-y min-h-[40px] w-full"
@@ -161,7 +183,6 @@ export default function BookingFormComponent() {
           onChange={(e) => setFormData({ ...formData, additionalInfo: e.target.value })}
         ></textarea>
 
-        {/* Price + Currency */}
         <div className="flex space-x-2">
           <input
             type="number"
@@ -186,7 +207,6 @@ export default function BookingFormComponent() {
           </select>
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-center gap-4 mt-4">
           <button type="button" className="futuristic-btn w-5/12" onClick={() => setShowMintModal(true)}>Mint NFT</button>
           <button type="button" className="futuristic-btn w-5/12" onClick={() => setShowDraftModal(true)}>Draft NFT</button>
@@ -194,10 +214,7 @@ export default function BookingFormComponent() {
       </form>
 
       {showMintModal && (
-        <MintNFTModal
-          onClose={() => setShowMintModal(false)}
-          formData={formData}
-        />
+        <MintNFTModal onClose={() => setShowMintModal(false)} formData={formData} />
       )}
 
       {showDraftModal && (

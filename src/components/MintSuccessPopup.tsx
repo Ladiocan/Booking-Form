@@ -1,6 +1,19 @@
-import React, { useState } from 'react';
+'use client';
 
-export default function MintSuccessPopup({ imageSrc, transactionHash, onClose }) {
+import React, { useState } from 'react';
+import Image from 'next/image';
+
+interface MintSuccessPopupProps {
+  imageSrc: string;
+  transactionHash: string;
+  onClose: () => void;
+}
+
+export default function MintSuccessPopup({
+  imageSrc,
+  transactionHash,
+  onClose
+}: MintSuccessPopupProps) {
   const [showImage, setShowImage] = useState(false);
 
   const downloadImage = () => {
@@ -37,11 +50,12 @@ export default function MintSuccessPopup({ imageSrc, transactionHash, onClose })
 
           {showImage && imageSrc && (
             <div className="mt-4 flex justify-center">
-              <img
+              <Image
                 src={imageSrc}
                 alt="NFT Voucher"
-                className="rounded-xl shadow-lg"
-                style={{ maxWidth: '100%', maxHeight: 'calc(90vh - 300px)', objectFit: 'contain' }}
+                width={600}
+                height={600}
+                className="rounded-xl shadow-lg object-contain"
               />
             </div>
           )}
