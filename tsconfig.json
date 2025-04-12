@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.js", "src/components/BlockchainBg.jsx", "src/components/BlockchainBg.jsx", "src/components/ConnectButton.jsx", "src/components/BookingFormComponent.jsx", "src/components/ConfirmMintButton.jsx"],
+"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
