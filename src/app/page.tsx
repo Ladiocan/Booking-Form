@@ -1,8 +1,8 @@
 'use client';
 
 import { useAccount } from 'wagmi';
-import BookingFormComponent from '@/components/BookingFormComponent';
-import ConnectButton from '@/components/ConnectButton';
+import BookingFormComponent from '@/components/BookingFormComponent.jsx';
+import ConnectButton from '@/components/ConnectButton.jsx';
 import '../styles/globals.css';
 
 export default function BookingFormPage() {

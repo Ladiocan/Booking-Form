@@ -4,9 +4,13 @@ import { useEffect } from 'react';
 
 export default function BlockchainBg() {
   useEffect(() => {
-    const canvas = document.getElementById('bg-canvas') as HTMLCanvasElement;
+    const canvas = document.getElementById('bg-canvas');
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
-    let particles: any[] = [];
+    if (!ctx) return;
+
+    let particles = [];
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -26,10 +30,9 @@ export default function BlockchainBg() {
     }
 
     const draw = () => {
-      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // nods
+      
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
@@ -37,7 +40,7 @@ export default function BlockchainBg() {
         ctx.fill();
       });
 
-      // lines
+      
       particles.forEach((p1) => {
         particles.forEach((p2) => {
           const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
@@ -52,7 +55,6 @@ export default function BlockchainBg() {
         });
       });
 
-      // animation
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
@@ -69,6 +71,6 @@ export default function BlockchainBg() {
   }, []);
 
   return (
-    <canvas id="bg-canvas" className="w-full h-full fixed inset-0 -z-10 pointer-events-none"></canvas>
+    <canvas id="bg-canvas" className="w-full h-full fixed inset-0 -z-10 pointer-events-none" />
   );
 }

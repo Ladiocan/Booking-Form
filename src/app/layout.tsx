@@ -1,10 +1,10 @@
 'use client';
 
-import { WagmiConfig } from 'wagmi';
-import { wagmiConfig } from '../wagmiConfig';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WagmiProvider } from 'wagmi'
+import { config } from '../wagmiConfig'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import '../styles/globals.css';
-import BlockchainBg from '@/components/BlockchainBg';
+import BlockchainBg from '@/components/BlockchainBg.jsx';
 
 const queryClient = new QueryClient();
 
@@ -43,9 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <BlockchainBg />
-        <WagmiConfig config={wagmiConfig}>
+        <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-        </WagmiConfig>
+        </WagmiProvider>
       </body>
     </html>
   );
