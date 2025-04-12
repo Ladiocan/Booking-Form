@@ -25,7 +25,7 @@ export default function ConnectButton() {
           onClick={() => connect({ connector: metaMask() })}
           className="futuristic-btn w-full flex items-center justify-center gap-2"
         >
-          <Image src="/metamask.svg" alt="MetaMask" width={20} height={20} />
+          <Image src="/MetaMask.svg" alt="MetaMask" width={20} height={20} />
           Connect MetaMask
         </button>
       )}
